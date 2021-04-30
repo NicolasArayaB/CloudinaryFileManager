@@ -1,20 +1,34 @@
 import React, { useContext, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Context } from "../store/appContext";
 
 const Upload = () => {
-	const { actions } = useContext(Context);
+	const { actions, store } = useContext(Context);
+
+	const myWidget = cloudinary.createUploadWidget(
+		{
+			cloudName: "pet-cloud-img",
+			upload_preset: "romerotest"
+		},
+		(error, result) => {
+			if (result.event == "success") {
+				console.log(result.info, "uploadInfo");
+				actions.fileUpload(result.info, store.login.name);
+			}
+		}
+	);
+
+	const handleClick = () => {
+		myWidget.open();
+	};
 
 	useEffect(() => {}, []);
 
 	return (
 		<>
-			<Form onSubmit={handleSubmit}>
-				<Form.Group>
-					<Form.File label="Subir archivo" ref={fileInput} />
-				</Form.Group>
-				<Button type="submit">Subir</Button>
-			</Form>
+			<Button onClick={() => handleClick()} type="submit">
+				Subir nuevo archivo
+			</Button>
 		</>
 	);
 };

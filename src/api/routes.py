@@ -6,7 +6,7 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 
 from werkzeug.security import generate_password_hash, check_password_hash
-# from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import datetime
 
 api = Blueprint('api', __name__)
@@ -31,21 +31,27 @@ def login():
         
         }), 401
 
-    # expiration = datetime.timedelta(days=2)
-    # access_token = create_access_token(identity=user.email, expires_delta=expiration)
+    elif not check_password_hash(user.password, password):
+        return jsonify({"msg": "Contraseña no es válida",
+        "status": 401
+        }), 401
+
+    expiration = datetime.timedelta(days=2)
+    access_token = create_access_token(identity=user.email, expires_delta=expiration)
 
     data = {
-        # "token": access_token,
+        "token": access_token,
         "user": user.serialize(),
-        # "expires": expiration.total_seconds()*1000,
-        "name": user.name
+        "expires": expiration.total_seconds()*1000,
+        "name": user.name,
+        "status": 200
     }
 
     return jsonify(data), 200
 
 @api.route('/register', methods=['POST'])
 def register():
-    print(request.json.get("name", None))
+
     name = request.json.get("name", None)
     email = request.json.get("email", None)
     password = request.json.get("password", None)
@@ -57,6 +63,7 @@ def register():
         return "Email es requerido", 401
     
     email_query = User.query.filter_by(email=email).first()
+    
     if email_query:
         return "Esta cuenta ya esta registrada", 401
 
@@ -77,3 +84,36 @@ def register():
     }
 
     return jsonify(response_token), 200
+
+@api.route('/files', methods = ['GET', 'POST'])
+def file_upload():
+  if request.method == 'GET':
+    response_body = {
+      files: Files.query.all()
+    }
+  else:
+    filename = request.json.get("filename")
+    uploaded_by = request.json.get("uploaded_by")
+    uploaded_at = request.json.get("uploaded_at")
+    file_format = request.json.get("file_format")
+    url = request.json.get("url")
+
+    newFile = File()
+    newFile.filename = filename
+    newFile.uploaded_by = uploaded_by
+    newFile.uploaded_at = uploaded_at
+    newFile.file_format = file_format
+    newFile.url = url
+
+    db.session.add(newFile)
+    db.session.commit()
+
+    response_body = {
+      "msg" "Archivo almacenado con exito"
+    }
+
+  return jsonify(response_body), 200
+  
+
+  
+

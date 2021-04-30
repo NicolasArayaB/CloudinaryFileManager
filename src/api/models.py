@@ -17,3 +17,23 @@ class User(db.Model):
             "name": self.name,
             "email": self.email
         }
+class File(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  filename = db.Column(db.String, unique=False, nullable=False)
+  uploaded_by = db.Column(db.String, unique=False, nullable=False)
+  uploaded_at = db.Column(db.String, unique=False, nullable=False)
+  file_format = db.Column(db.String, unique=False, nullable=False)
+  url = db.Column(db.String, unique=False, nullable=False)
+
+  def __repr__(self):
+    return '<File %r>' % self.filename
+
+  def serialize(self):
+    return {
+      "id": self.id,
+      "filename": self.filename,
+      "uploaded_by":self.uploaded_by,
+      "uploaded_at": self.uploaded_at,
+      "file_format": self.file_format,
+      "url": self.url
+    }

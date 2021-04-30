@@ -20,6 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							name: data.name
 						};
 						setStore({ login: loginData });
+
 						if (typeof Storage !== "undefined") {
 							localStorage.setItem("token", loginData.token);
 							localStorage.setItem("email", loginData.email);
@@ -59,46 +60,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 						name: nameLocal
 					}
 				});
+			},
+
+			fileUpload: (file, userName) => {
+				const fileInfo = {
+					filename: file.original_filename,
+					uploaded_by: userName,
+					uploaded_at: file.created_at,
+					file_format: file.format,
+					url: file.url
+				};
+
+				fetch(process.env.BACKEND_URL + `/api/files`, {
+					method: "POST",
+					body: JSON.stringify(fileInfo),
+					headers: { "Content-type": "application/json" }
+				})
+					.then(resp => resp.json())
+					.then(data => console.log(data))
+					.catch(error => console.log("Unexpected error", error));
 			}
-
-			// upload: async file => {
-			// 	try {
-			// 		await Storage.put(file.name, file, {});
-			// 	} catch (error) {
-			// 		console.log("Error uploading file: ", error);
-			// 	}
-			// }
-
-			// upload: (ReactS3Client, file, newFileName) => {
-			// 	ReactS3Client.uploadFile(file, newFileName)
-			// 		.then(data => {
-			// 			console.log(data);
-			// 			if (data.status == 204) {
-			// 				console.log("Success");
-			// 			} else {
-			// 				console.log("Fail!");
-			// 			}
-			// 		})
-			// 		.catch(err => console.error(err));
-			// }
-
-			// getFiles: () => {
-			// 	console.log("Fui llamado");
-			// 	s3.listObjects({
-			// 		Bucket: process.env.REACT_APP_INTERNAL_BUCKET_NAME
-			// 	})
-			// 		.on("success", function handlePage(response) {
-			// 			console.log(response.data);
-
-			// 			if (response.hasNextPage()) {
-			// 				response
-			// 					.nextPage()
-			// 					.on("success", handlePage)
-			// 					.send();
-			// 			}
-			// 		})
-			// 		.send();
-			// }
 		}
 	};
 };
