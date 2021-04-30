@@ -1,47 +1,104 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			login: [],
+			role: []
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-
-			getMessage: () => {
-				// fetching data from the backend
-				fetch(process.env.BACKEND_URL + "/api/hello")
+			setLogin: (userData, history) => {
+				fetch(process.env.BACKEND_URL + "/api/login", {
+					method: "POST",
+					body: JSON.stringify(userData),
+					headers: { "Content-type": "application/json" }
+				})
 					.then(resp => resp.json())
-					.then(data => setStore({ message: data.message }))
+					.then(data => {
+						const loginData = {
+							token: data.token,
+							email: data.user.email,
+							id: data.user.id,
+							name: data.name
+						};
+						setStore({ login: loginData });
+						if (typeof Storage !== "undefined") {
+							localStorage.setItem("token", loginData.token);
+							localStorage.setItem("email", loginData.email);
+							localStorage.setItem("name", loginData.name);
+							history.push("/files");
+							history.go();
+						} else {
+							// LocalStorage no soportado en este navegador
+							alert("Lo sentimos, tu navegador no es compatible.");
+						}
+					})
 					.catch(error => console.log("Error loading message from backend", error));
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
+			register: userData => {
+				console.log(userData, "antes de la api");
+				fetch(process.env.BACKEND_URL + "/api/register", {
+					method: "POST",
+					body: JSON.stringify(userData),
+					headers: { "Content-type": "application/json" }
+				})
+					.then(response => response.json())
+					.then(data => {
+						console.log(data, "register");
+					})
+					.catch(error => {
+						console.log(error, "flux");
+					});
+			},
+
+			getToken: () => {
+				const tokenLocal = localStorage.getItem("token");
+				const nameLocal = localStorage.getItem("name");
+				setStore({
+					role: {
+						token: tokenLocal,
+						name: nameLocal
+					}
 				});
-
-				//reset the global store
-				setStore({ demo: demo });
 			}
+
+			// upload: async file => {
+			// 	try {
+			// 		await Storage.put(file.name, file, {});
+			// 	} catch (error) {
+			// 		console.log("Error uploading file: ", error);
+			// 	}
+			// }
+
+			// upload: (ReactS3Client, file, newFileName) => {
+			// 	ReactS3Client.uploadFile(file, newFileName)
+			// 		.then(data => {
+			// 			console.log(data);
+			// 			if (data.status == 204) {
+			// 				console.log("Success");
+			// 			} else {
+			// 				console.log("Fail!");
+			// 			}
+			// 		})
+			// 		.catch(err => console.error(err));
+			// }
+
+			// getFiles: () => {
+			// 	console.log("Fui llamado");
+			// 	s3.listObjects({
+			// 		Bucket: process.env.REACT_APP_INTERNAL_BUCKET_NAME
+			// 	})
+			// 		.on("success", function handlePage(response) {
+			// 			console.log(response.data);
+
+			// 			if (response.hasNextPage()) {
+			// 				response
+			// 					.nextPage()
+			// 					.on("success", handlePage)
+			// 					.send();
+			// 			}
+			// 		})
+			// 		.send();
+			// }
 		}
 	};
 };
