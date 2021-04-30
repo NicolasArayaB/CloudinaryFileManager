@@ -15,9 +15,11 @@ const Login = props => {
 			validate={values => {
 				const errors = {};
 				if (!values.email) {
-					errors.email = "Required";
+					errors.email = "E-mail requerido";
 				} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
 					errors.email = "Email no es valido";
+				} else if (!values.password) {
+					errors.password = "Contraseña requerida";
 				}
 				return errors;
 			}}

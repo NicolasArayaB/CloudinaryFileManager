@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, File
 from api.utils import generate_sitemap, APIException
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -26,7 +26,7 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     if not user:
-        return jsonify({"msg": "Email no valido",
+        return jsonify({"msg": "Este e-mail no esta registrado",
         "status": 401
         
         }), 401
@@ -88,15 +88,25 @@ def register():
 @api.route('/files', methods = ['GET', 'POST'])
 def file_upload():
   if request.method == 'GET':
+    files = File.query.all()
+    files= list(map(lambda x: x.serialize(), files))
+
     response_body = {
-      files: Files.query.all()
+      "files": files 
     }
+
   else:
-    filename = request.json.get("filename")
-    uploaded_by = request.json.get("uploaded_by")
-    uploaded_at = request.json.get("uploaded_at")
-    file_format = request.json.get("file_format")
-    url = request.json.get("url")
+    filename = request.json.get("filename", None)
+    uploaded_by = request.json.get("uploaded_by", None)
+    uploaded_at = request.json.get("uploaded_at", None)
+    file_format = request.json.get("file_format", None)
+    url = request.json.get("url", None)
+
+    if not filename:
+      return "Se requiere nombre de archivo", 401
+    
+    if not uploaded_by:
+      return "Debes estar registrado", 401
 
     newFile = File()
     newFile.filename = filename

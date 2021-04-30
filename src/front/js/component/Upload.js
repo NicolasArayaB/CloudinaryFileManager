@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
 import { Context } from "../store/appContext";
 
 const Upload = () => {
-	const { actions, store } = useContext(Context);
+	const { actions } = useContext(Context);
 
 	const myWidget = cloudinary.createUploadWidget(
 		{
@@ -12,8 +12,8 @@ const Upload = () => {
 		},
 		(error, result) => {
 			if (result.event == "success") {
-				console.log(result.info, "uploadInfo");
-				actions.fileUpload(result.info, store.login.name);
+				actions.fileUpload(result.info, localStorage.getItem("name"));
+				console.log(result);
 			}
 		}
 	);
@@ -21,8 +21,6 @@ const Upload = () => {
 	const handleClick = () => {
 		myWidget.open();
 	};
-
-	useEffect(() => {}, []);
 
 	return (
 		<>

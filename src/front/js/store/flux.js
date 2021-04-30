@@ -2,7 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			login: [],
-			role: []
+			files: []
 		},
 		actions: {
 			setLogin: (userData, history) => {
@@ -78,6 +78,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 					.then(resp => resp.json())
 					.then(data => console.log(data))
+					.catch(error => console.log("Unexpected error", error));
+			},
+
+			getFiles: setFiles => {
+				fetch(process.env.BACKEND_URL + `/api/files`, {
+					method: "GET",
+					headers: { "Content-type": "application/json" }
+				})
+					.then(resp => resp.json())
+					.then(data => {
+						setFiles(data.files);
+						console.log(data, "filesData");
+					})
 					.catch(error => console.log("Unexpected error", error));
 			}
 		}

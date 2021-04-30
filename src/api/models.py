@@ -17,10 +17,11 @@ class User(db.Model):
             "name": self.name,
             "email": self.email
         }
+
 class File(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   filename = db.Column(db.String, unique=False, nullable=False)
-  uploaded_by = db.Column(db.String, unique=False, nullable=False)
+  uploaded_by = db.Column(db.String, unique=False)
   uploaded_at = db.Column(db.String, unique=False, nullable=False)
   file_format = db.Column(db.String, unique=False, nullable=False)
   url = db.Column(db.String, unique=False, nullable=False)
