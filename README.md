@@ -1,4 +1,4 @@
-# WebApp boilerplate with React JS
+# File Manager
 
 ### Styles
 As simple as I could, using React-Bootstrap for basic structure.
