@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-
+import { Context } from "../store/appContext";
 import Uploaded from "../component/Uploaded";
 import Upload from "../component/Upload";
 
 export const Files = () => {
+	const { actions } = useContext(Context);
+	const [files, setFiles] = useState("");
+
+	useEffect(() => {
+		actions.getFiles(setFiles);
+	}, []);
+
 	return (
 		<Container>
 			<Row>
@@ -14,12 +21,12 @@ export const Files = () => {
 			</Row>
 			<Row>
 				<Col>
-					<Uploaded />
+					<Uploaded files={files} setFiles={setFiles} />
 				</Col>
 			</Row>
 			<Row>
 				<Col>
-					<Upload />
+					<Upload files={files} setFiles={setFiles} />
 				</Col>
 			</Row>
 		</Container>

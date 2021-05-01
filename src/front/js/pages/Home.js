@@ -1,14 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Context } from "../store/appContext";
 import { Container, Row, Col } from "react-bootstrap";
-
 import "../../styles/home.scss";
-
 import Login from "../component/Login";
 import Register from "../component/Register";
 
 export const Home = () => {
-	const { store, actions } = useContext(Context);
 	const [registeredUser, setRegisteredUser] = useState(true);
 
 	return (

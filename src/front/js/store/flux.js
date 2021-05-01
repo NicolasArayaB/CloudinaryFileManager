@@ -1,4 +1,4 @@
-const getState = ({ getStore, getActions, setStore }) => {
+const getState = ({ setStore }) => {
 	return {
 		store: {
 			login: [],
@@ -13,30 +13,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 					.then(resp => resp.json())
 					.then(data => {
-						const loginData = {
-							token: data.token,
-							email: data.user.email,
-							id: data.user.id,
-							name: data.name
-						};
-						setStore({ login: loginData });
+						if (data.status == 200) {
+							const loginData = {
+								token: data.token,
+								email: data.user.email,
+								id: data.user.id,
+								name: data.name
+							};
+							setStore({ login: loginData });
 
-						if (typeof Storage !== "undefined") {
-							localStorage.setItem("token", loginData.token);
-							localStorage.setItem("email", loginData.email);
-							localStorage.setItem("name", loginData.name);
-							history.push("/files");
-							history.go();
+							if (typeof Storage !== "undefined") {
+								localStorage.setItem("token", loginData.token);
+								localStorage.setItem("email", loginData.email);
+								localStorage.setItem("name", loginData.name);
+								history.push("/files");
+								history.go();
+							} else {
+								// LocalStorage no soportado en este navegador
+								alert("Lo sentimos, tu navegador no es compatible.");
+							}
 						} else {
-							// LocalStorage no soportado en este navegador
-							alert("Lo sentimos, tu navegador no es compatible.");
+							alert(data.msg);
 						}
 					})
 					.catch(error => console.log("Error loading message from backend", error));
 			},
 
 			register: userData => {
-				console.log(userData, "antes de la api");
 				fetch(process.env.BACKEND_URL + "/api/register", {
 					method: "POST",
 					body: JSON.stringify(userData),
@@ -44,10 +47,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 					.then(response => response.json())
 					.then(data => {
-						console.log(data, "register");
+						console.log("Usuario registrado con exito");
 					})
 					.catch(error => {
-						console.log(error, "flux");
+						console.log(error);
 					});
 			},
 
@@ -62,7 +65,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 			},
 
-			fileUpload: (file, userName) => {
+			fileUpload: (filesArr, setFiles, file, userName) => {
 				const fileInfo = {
 					filename: file.original_filename,
 					uploaded_by: userName,
@@ -77,7 +80,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: { "Content-type": "application/json" }
 				})
 					.then(resp => resp.json())
-					.then(data => console.log(data))
+					.then(data => {
+						setFiles(...filesArr, data.files);
+						console.log(filesArr);
+					})
 					.catch(error => console.log("Unexpected error", error));
 			},
 

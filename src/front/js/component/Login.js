@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
+import { Button } from "react-bootstrap";
 
 const Login = props => {
 	const { actions } = useContext(Context);
@@ -26,15 +26,15 @@ const Login = props => {
 			onSubmit={(values, { setSubmitting }) => {
 				actions.setLogin(values, history);
 			}}>
-			{({ isSubmitting }) => (
+			{() => (
 				<Form className="registrationForm mx-auto">
 					<Field className="m-2" type="email" name="email" placeholder="Ingresa tu e-mail" />
 					<ErrorMessage name="email" component="div" />
 					<Field className="m-2" type="password" name="password" placeholder="Ingresa tu contraseña" />
 					<ErrorMessage name="password" component="div" />
-					<button className="my-3" type="submit" disabled={isSubmitting}>
+					<Button className="my-3" type="submit">
 						Submit
-					</button>
+					</Button>
 					<p>
 						¿Aun no estás registrado?
 						<a className="registeredBtn pe-auto" href="#" onClick={() => props.setRegisteredUser(false)}>

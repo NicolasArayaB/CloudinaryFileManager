@@ -58,51 +58,6 @@ const Register = props => {
 			</Formik>
 		</Container>
 	);
-
-	// <Form className="registrationForm mx-auto" autoComplete="off" onSubmit={e => submitHandler(e)}>
-	// 	<Form.Control
-	// 		value={name}
-	// 		onChange={e => setName(e.target.value)}
-	// 		type="text"
-	// 		placeholder="Ingresa tu Nombre"
-	// 		className="mb-2"
-	// 	/>
-	// 	<Form.Control
-	// 		value={email}
-	// 		onChange={e => setEmail(e.target.value)}
-	// 		type="email"
-	// 		placeholder="Ingresa tu e-mail"
-	// 		className="mb-2"
-	// 	/>
-	// 	<Form.Group>
-	// 		<Form.Control
-	// 			value={password}
-	// 			onChange={e => setPassword(e.target.value)}
-	// 			type="password"
-	// 			placeholder="Ingresa tu contraseña"
-	// 		/>
-	// 		<Form.Text>La contraseña debe tener entre 6 a 8 caracteres</Form.Text>
-	// 	</Form.Group>
-	// 	<Container>
-	// 		<Row>
-	// 			<Col>
-	// 				<Button className="my-3" type="submit">
-	// 					Crear cuenta
-	// 				</Button>
-	// 			</Col>
-	// 		</Row>
-	// 		<Row>
-	// 			<Col>
-	// 				<p>¿Ya estás registrado?</p>
-	// 				<a className="registeredBtn pe-auto" href="#" onClick={() => props.setRegisteredUser(true)}>
-	// 					{" "}
-	// 					Ingresa a tu cuenta
-	// 				</a>
-	// 			</Col>
-	// 		</Row>
-	// 	</Container>
-	// </Form>
-	// );
 };
 
 Register.propTypes = {

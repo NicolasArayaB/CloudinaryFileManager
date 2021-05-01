@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
+import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
 
-const Upload = () => {
+const Upload = props => {
 	const { actions } = useContext(Context);
 
 	const myWidget = cloudinary.createUploadWidget(
@@ -12,8 +13,7 @@ const Upload = () => {
 		},
 		(error, result) => {
 			if (result.event == "success") {
-				actions.fileUpload(result.info, localStorage.getItem("name"));
-				console.log(result);
+				actions.fileUpload(props.files, props.setFiles, result.info, localStorage.getItem("name"));
 			}
 		}
 	);
@@ -29,6 +29,11 @@ const Upload = () => {
 			</Button>
 		</>
 	);
+};
+
+Upload.propTypes = {
+	files: PropTypes.array,
+	setFiles: PropTypes.func
 };
 
 export default Upload;
