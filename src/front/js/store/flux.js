@@ -1,9 +1,11 @@
-const getState = ({ setStore }) => {
+const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			login: [],
+			// token: {},
 			files: []
 		},
+
 		actions: {
 			setLogin: (userData, history) => {
 				fetch(process.env.BACKEND_URL + "/api/login", {
@@ -52,17 +54,6 @@ const getState = ({ setStore }) => {
 					.catch(error => {
 						console.log(error);
 					});
-			},
-
-			getToken: () => {
-				const tokenLocal = localStorage.getItem("token");
-				const nameLocal = localStorage.getItem("name");
-				setStore({
-					role: {
-						token: tokenLocal,
-						name: nameLocal
-					}
-				});
 			},
 
 			fileUpload: (filesArr, setFiles, file, userName) => {
