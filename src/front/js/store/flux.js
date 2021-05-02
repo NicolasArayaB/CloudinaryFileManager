@@ -2,7 +2,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			login: [],
-			// token: {},
 			files: []
 		},
 
@@ -48,15 +47,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: { "Content-type": "application/json" }
 				})
 					.then(response => response.json())
-					.then(data => {
-						console.log("Usuario registrado con exito");
-					})
-					.catch(error => {
-						console.log(error);
-					});
+					.then(data => console.log("Usuario registrado con exito"))
+					.catch(error => console.log(error));
 			},
 
-			fileUpload: (filesArr, setFiles, file, userName) => {
+			fileUpload: (file, userName, setFiles) => {
 				const fileInfo = {
 					filename: file.original_filename,
 					uploaded_by: userName,
@@ -72,8 +67,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 					.then(resp => resp.json())
 					.then(data => {
-						setFiles(...filesArr, data.files);
-						console.log(filesArr);
+						getActions().getFiles(setFiles);
 					})
 					.catch(error => console.log("Unexpected error", error));
 			},
@@ -84,10 +78,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: { "Content-type": "application/json" }
 				})
 					.then(resp => resp.json())
-					.then(data => {
-						setFiles(data.files);
-						console.log(data, "filesData");
-					})
+					.then(data => setFiles(data.files))
 					.catch(error => console.log("Unexpected error", error));
 			}
 		}

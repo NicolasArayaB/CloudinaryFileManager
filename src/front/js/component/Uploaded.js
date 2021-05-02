@@ -20,25 +20,27 @@ const Uploaded = props => {
 				</tr>
 			</thead>
 			<tbody>
-				{props.files
-					? props.files.map((file, index) => (
-							<tr key={index}>
-								<td>{file.filename}</td>
-								<td>{file.uploaded_by}</td>
-								<td>
-									{file.uploaded_at
-										.split("T")[0]
-										.split("-")
-										.reverse()
-										.join("-")}
-								</td>
-								<td>{file.file_format}</td>
-								<td>
-									<Button onClick={() => handleClick(file.url)}>Descargar</Button>
-								</td>
-							</tr>
-					  ))
-					: ""}
+				{props.files ? (
+					props.files.map((file, index) => (
+						<tr key={index}>
+							<td>{file.filename}</td>
+							<td>{file.uploaded_by}</td>
+							<td>
+								{file.uploaded_at
+									.split("T")[0]
+									.split("-")
+									.reverse()
+									.join("-")}
+							</td>
+							<td>{file.file_format}</td>
+							<td>
+								<Button onClick={() => handleClick(file.url)}>Descargar</Button>
+							</td>
+						</tr>
+					))
+				) : (
+					<tr />
+				)}
 			</tbody>
 		</Table>
 	);

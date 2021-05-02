@@ -13,7 +13,7 @@ const Upload = props => {
 		},
 		(error, result) => {
 			if (result.event == "success") {
-				actions.fileUpload(props.files, props.setFiles, result.info, localStorage.getItem("name"));
+				actions.fileUpload(result.info, localStorage.getItem("name"), props.setFiles);
 			}
 		}
 	);

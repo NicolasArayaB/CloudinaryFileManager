@@ -9,22 +9,22 @@ class User(db.Model):
   password = db.Column(db.String(250), unique=False, nullable=False)
 
   def __repr__(self):
-      return '<User %r>' % self.username
+    return '<User %r>' % self.name
 
   def serialize(self):
-      return {
-          "id": self.id,
-          "name": self.name,
-          "email": self.email
-      }
+    return {
+      "id": self.id,
+      "name": self.name,
+      "email": self.email
+    }
 
 class File(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  filename = db.Column(db.String, unique=False, nullable=False)
-  uploaded_by = db.Column(db.String, unique=False)
-  uploaded_at = db.Column(db.String, unique=False, nullable=False)
-  file_format = db.Column(db.String, unique=False, nullable=False)
-  url = db.Column(db.String, unique=False, nullable=False)
+  filename = db.Column(db.String(250), unique=False, nullable=False)
+  uploaded_by = db.Column(db.String(50), unique=False)
+  uploaded_at = db.Column(db.String(100), unique=False, nullable=False)
+  file_format = db.Column(db.String(10), unique=False, nullable=False)
+  url = db.Column(db.String(500), unique=False, nullable=False)
 
   def __repr__(self):
     return '<File %r>' % self.filename

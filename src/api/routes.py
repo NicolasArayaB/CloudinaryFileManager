@@ -93,7 +93,7 @@ def file_upload():
       "files": files 
     }
 
-  else:
+  elif request.method == 'POST':
     filename = request.json.get("filename", None)
     uploaded_by = request.json.get("uploaded_by", None)
     uploaded_at = request.json.get("uploaded_at", None)
@@ -117,7 +117,7 @@ def file_upload():
     db.session.commit()
 
     response_body = {
-      "msg" "Archivo almacenado con exito"
+      "msg": "Archivo almacenado con exito"
     }
 
   return jsonify(response_body), 200
