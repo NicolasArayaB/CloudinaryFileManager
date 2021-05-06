@@ -95,9 +95,9 @@ def file_upload():
 
   elif request.method == 'POST':
     filename = request.json.get("filename", None)
-    uploaded_by = request.json.get("uploaded_by", None)
-    uploaded_at = request.json.get("uploaded_at", None)
-    file_format = request.json.get("file_format", None)
+    uploaded_by = request.json.get("uploadedBy", None)
+    uploaded_at = request.json.get("uploadedAt", None)
+    file_format = request.json.get("fileFormat", None)
     url = request.json.get("url", None)
 
     if not filename:

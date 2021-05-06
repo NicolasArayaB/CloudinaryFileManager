@@ -14,17 +14,13 @@ const Upload = props => {
 		(error, result) => {
 			if (result.event == "success") {
 				actions.fileUpload(result.info, localStorage.getItem("name"), props.setFiles);
-			}
+			} else if (result.status) alert(result.statusText, error);
 		}
 	);
 
-	const handleClick = () => {
-		myWidget.open();
-	};
-
 	return (
 		<>
-			<Button onClick={() => handleClick()} type="submit">
+			<Button onClick={() => myWidget.open()} type="submit">
 				Subir nuevo archivo
 			</Button>
 		</>

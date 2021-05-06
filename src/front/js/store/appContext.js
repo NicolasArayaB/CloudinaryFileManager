@@ -7,7 +7,7 @@ export const Context = React.createContext(null);
 // Inject the global store to any view/component, we will inject the context to layout.js
 const injectContext = PassedComponent => {
 	const StoreWrapper = props => {
-		//this will be passed as the contenxt value
+		//this will be passed as the context value
 		const [state, setState] = useState(
 			getState({
 				getStore: () => state.store,

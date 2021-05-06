@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Dropdown } from "react-bootstrap";
+import { Container, Row, Col, Dropdown } from "react-bootstrap";
 import { Context } from "../store/appContext";
 import Uploaded from "../component/Uploaded";
 import Upload from "../component/Upload";
 
 export const Files = () => {
 	const { actions } = useContext(Context);
-	const [files, setFiles] = useState("");
+	const [files, setFiles] = useState([]);
 
 	useEffect(() => {
 		actions.getFiles(setFiles);

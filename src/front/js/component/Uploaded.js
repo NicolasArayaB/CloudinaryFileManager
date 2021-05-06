@@ -1,13 +1,8 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
 
 const Uploaded = props => {
-	const handleClick = url => {
-		window.open(url);
-	};
-
 	return (
 		<Table striped bordered hover className="my-5">
 			<thead>
@@ -34,7 +29,7 @@ const Uploaded = props => {
 							</td>
 							<td>{file.file_format}</td>
 							<td>
-								<Button onClick={() => handleClick(file.url)}>Descargar</Button>
+								<Button onClick={() => window.open(file.url)}>Descargar</Button>
 							</td>
 						</tr>
 					))

@@ -54,9 +54,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			fileUpload: (file, userName, setFiles) => {
 				const fileInfo = {
 					filename: file.original_filename,
-					uploaded_by: userName,
-					uploaded_at: file.created_at,
-					file_format: file.format,
+					uploadedBy: userName,
+					uploadedAt: file.created_at,
+					fileFormat: file.format,
 					url: file.url
 				};
 

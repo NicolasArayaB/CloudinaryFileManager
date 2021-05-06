@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Context } from "../store/appContext";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import "../../styles/home.scss";
@@ -7,7 +6,6 @@ import Login from "../component/Login";
 import Register from "../component/Register";
 
 export const Home = () => {
-	const { store } = useContext(Context);
 	const [registeredUser, setRegisteredUser] = useState(true);
 	const [redirect, setRedirect] = useState(false);
 
